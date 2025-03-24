@@ -9,7 +9,7 @@ Go has built-in **numeric, string, and boolean** types.
 
 ### **🔹 Numeric Types**  
 | Type | Description | Example |
-|------|------------|---------|
+|------|-------------|---------|
 | `int`, `int8`, `int16`, `int32`, `int64` | Signed integers | `var x int = 10` |
 | `uint`, `uint8`, `uint16`, `uint32`, `uint64` | Unsigned integers | `var y uint = 20` |
 | `float32`, `float64` | Floating-point numbers | `var f float64 = 3.14` |
@@ -19,7 +19,7 @@ Go has built-in **numeric, string, and boolean** types.
 
 ### **🔹 String & Boolean**  
 | Type | Description | Example |
-|------|------------|---------|
+|------|-------------|---------|
 | `string` | Immutable sequence of characters | `var s string = "Hello"` |
 | `bool` | Boolean type (`true` or `false`) | `var flag bool = true` |
 
@@ -101,17 +101,17 @@ fmt.Println(x) // 100
 
 ---
 
-### **4. Memory Allocation 🏗️**  
+## **4. Memory Allocation 🏗️**  
 Go has `new` and `make` for memory allocation.  
 
-#### **🔹 Using `new` (Allocates Zeroed Memory)**  
+### **🔹 Using `new` (Allocates Zeroed Memory)**  
 Returns a pointer to a zero-initialized value.  
 ```go
 p := new(int) // *int, initialized to 0
 fmt.Println(*p) // 0
 ```
 
-#### **🔹 Using `make` (Allocates Memory for Slices, Maps, Channels)**  
+### **🔹 Using `make` (Allocates Memory for Slices, Maps, Channels)**  
 ```go
 s := make([]int, 5) // Slice of length 5
 m := make(map[string]int) // Empty map
