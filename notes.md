@@ -1165,6 +1165,102 @@ This advanced guide covers key topics such as:
 - **Comprehensive testing and benchmarking**, including race condition detection.
 - **Effective code organization and architectural best practices** for scalable Go applications.
 
-Each section includes both detailed explanations of internal mechanisms and practical, ready-to-run examples to illustrate the concepts.
+## **Stack vs Heap Memory in Golang**
 
-Feel free to expand on these topics with additional examples, diagrams, or further explanations as needed for your book. Happy writing!
+### **1. Introduction**
+
+In Go, memory is primarily allocated in two areas:
+
+- **Stack Memory** → Used for local variables with fixed size and known at compile time.
+- **Heap Memory** → Used for dynamically allocated variables whose size is unknown or large.
+
+Understanding how Go manages memory helps in writing efficient and optimized code.
+
+---
+
+### **2. Stack Memory**
+
+#### **🔹 What is Stack Memory?**
+
+- A **LIFO (Last In, First Out)** data structure used for storing function calls, local variables, and control flow.
+- Allocated automatically when a function is called and deallocated when the function returns.
+- Extremely fast because memory is allocated sequentially and managed efficiently.
+
+#### **🔹 Characteristics of Stack Memory**
+
+| **Feature**          | **Stack Memory**                                                                 |
+|-----------------------|----------------------------------------------------------------------------------|
+| **Allocation Speed**  | Very Fast (happens at compile time)                                              |
+| **Memory Size**       | Limited (few MBs per goroutine)                                                 |
+| **Lifetime**          | Until function exits                                                           |
+| **Access Time**       | Faster (compared to heap)                                                       |
+| **Managed By**        | Compiler & Runtime                                                             |
+| **Garbage Collection?** | No (automatically deallocated)                                                |
+| **Typical Use**       | Local function variables, function calls, `defer` statements                   |
+
+#### **🔹 Example of Stack Allocation in Go**
+
+```go
+package main
+
+import "fmt"
+
+func add(a, b int) int {
+    sum := a + b  // 'sum' is stored in Stack
+    return sum
+}
+
+func main() {
+    result := add(3, 4) // 'result' is also on Stack
+    fmt.Println(result)
+}
+```
+
+👉 **Explanation:**  
+Here, `sum` and `result` are stored in the stack and get automatically deallocated when the function exits.
+
+---
+
+### **3. Heap Memory**
+
+#### **🔹 What is Heap Memory?**
+
+- The **Heap** is used for dynamically allocated memory (variables whose size is not known at compile-time).
+- Memory persists beyond function calls, and it must be explicitly garbage collected.
+
+#### **🔹 Characteristics of Heap Memory**
+
+| **Feature**          | **Heap Memory**                                                                 |
+|-----------------------|---------------------------------------------------------------------------------|
+| **Allocation Speed**  | Slower (requires system call `malloc`)                                         |
+| **Memory Size**       | Large (can grow dynamically)                                                   |
+| **Lifetime**          | Until garbage collected                                                       |
+| **Access Time**       | Slower (compared to stack)                                                     |
+| **Managed By**        | Go Garbage Collector                                                          |
+| **Garbage Collection?** | Yes (GC removes unused objects)                                              |
+| **Typical Use**       | Structs, Slices, Maps, Dynamic Arrays                                          |
+
+#### **🔹 Example of Heap Allocation in Go**
+
+```go
+package main
+
+import "fmt"
+
+func createPointer() *int {
+    x := 10  // Stored in Stack initially
+    return &x // 'x' is moved to Heap since it escapes the function
+}
+
+func main() {
+    ptr := createPointer() // Stored in Heap
+    fmt.Println(*ptr)
+}
+```
+
+👉 **Why does `x` move to the Heap?**  
+- Since `x` is returned as a pointer, it must persist beyond `createPointer()`.  
+- The compiler moves it to the heap to ensure it’s accessible even after `createPointer()` exits.  
+- The Go garbage collector will eventually clean it up.
+
+---
